@@ -1,43 +1,68 @@
- // static posts Vue component
-Vue.component('static-posts', {
+// base Url of the API
+const baseUrl = "http://jsonplaceholder.typicode.com";
 
-  // setting the template that this component will use to render
-  // references the template with id static-posts-template in your markup.
-  template: '#static-posts-template',
-
-  // Components are capable of managing their own data internally
-  // the data function is where we define all the variables this component will need
-  // in this specific case, we only need to worry about an array of post
+// List Component
+const List = {
+  template: '#list-template',
   data: () => ({
     posts: []
   }),
-
-  // this is called whenever this component is mounted onto the DOM
-  // basically whenever we want to show all the posts, we go and get them
   mounted() {
-    this.getPosts();
+    this.getPosts()
   },
-
-  // this is where you define all the methods this component needs
   methods: {
-    // getPost simply sets the 'posts' variable with static data
+    // You are issuing a GET request to the /posts route on the base URL that we defined at the top of the file.
+    // If successful, you assign posts the data that was returned in the response.
+    // Otherwise, the error is logged to the console.
     getPosts() {
-      this.posts = [
-        {
-          "title": "The first post title!"
-        },
-        {
-          "title": "The second post title!"
-        },
-        {
-          "title": "The third post title!"
-        },
-      ]
+      axios.get(`${baseUrl}/posts`).then(response => {
+        this.posts = response.data
+        console.log(this.posts)
+      }).catch(error => {
+        console.log(error)
+      })
     }
   }
+}
+
+// Post Component
+const Post = {
+  template: '#post-template',
+  data: () => ({
+    post: null
+  }),
+  mounted() {
+    this.getPosts()
+  },
+  methods: {
+    getPosts() {
+      const id = this.$route.params.id
+      axios.get(`${baseUrl}/posts/${id}`).then(response => {
+        this.post = response.data
+        console.log(this.post)
+      }).catch(error => {
+        console.log(error)
+      })
+    }
+  }
+}
+
+// Create Vue Router
+const router = new VueRouter({
+  // Setting the mode to history prevents your URLs from having
+  // a # sign at the end, and instead look like “normal” URLs.
+  mode: 'history',
+  routes: [{
+      name: 'homepage',
+      path: '/',
+      component: List
+    }, {
+      name: 'post',
+      path: '/:id',
+      component: Post
+    }
+  ]
 })
 
-// Create new Vue instance and mount onto elmement with id app
-new Vue({
-  el: '#app'
-})
+const vue = new Vue({router})
+const app = vue.$mount('#app')

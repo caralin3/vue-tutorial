@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <title>Vue Post Reader</title>
+  </head>
+  <body>
+    <div id="initial-app">
+      <!-- This tag tells Vue where you want to render your static-posts component -->
+      <static-posts />
+    </div>
+    <template id="static-posts-template">
+      <div>
+        <h1>Here are the post titles:</h1>
+        <ul>
+          <li v-for="post in posts">
+            <!-- This is called interpolation and it is what prevents that line of markup
+            to render as post.title when you instead want the actual post’s title to render -->
+            {{post.title}}
+          </li>
+        </ul>
+      </div>
+    </template>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.3/vue.js"></script>
+    <script src="initial-app.js"></script>
+  </body>
+</html>
