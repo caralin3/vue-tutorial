@@ -7,8 +7,16 @@
       <router-view />
     </div>
     <template id="list-template">
+      <!-- we use the v-model attribute on an input tag,
+      we are telling Vue to set the initial value of that input tag,
+      to whatever variable we want, but also, that when the user changes the value,
+      we want the new value automatically assigned as the value of that variable. -->
+      <input v-model="search" placeholder="Enter Search Terms" />
+      <p>
+        Displaying {{filteredPosts.length}} posts, filterd by <strong>{{search}}</strong>
+      </p>
       <ul>
-        <li v-for="post in posts">
+        <li v-for="post in filteredPosts">
             <!-- router-link is how vue-router keeps track of navigation.
             Instead of a URL like you’re used to inside an <a> tag,
             you need to tell Vue what route you are trying to access,

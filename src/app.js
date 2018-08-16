@@ -5,8 +5,16 @@ const baseUrl = "http://jsonplaceholder.typicode.com";
 const List = {
   template: '#list-template',
   data: () => ({
-    posts: []
+    posts: [],
+    search: ''
   }),
+  computed: {
+    filteredPosts() {
+      return this.posts.filter(post => (
+        post.tile.includes(this.search)
+      ))
+    }
+  },
   mounted() {
     this.getPosts()
   },
